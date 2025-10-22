@@ -1,7 +1,22 @@
+# macOS
 .DS_Store
-.vscode
-.cache
-JuceLibraryCode
-Builds
-build
-CMakeFiles
+
+# IDE
+.vscode/
+
+# CMake / build artifacts
+/build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+install_manifest.txt
+compile_commands.json
+
+# JUCE generated code (if you don't want to track)
+JuceLibraryCode/
+Builds/
+
+# Optional cache folders
+.cache/
+
