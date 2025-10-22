@@ -14,7 +14,8 @@ A minimal template for creating audio plugins with JUCE and CMake.
 ## Requirements
 
 - C++17 compiler (Clang, GCC, MSVC)  
-- CMake 3.21+  
+- CMake 3.21+
+- Ninja (optional but recommended)  
 
 ---
 
