@@ -1,10 +1,9 @@
 #include "PluginEditor.h"
-#include "mrta_utils/Source/GUI/GenericParameterEditor.h"
-#include "ParameterInfo.h"
 
 
 MyAudioProcessorEditor::MyAudioProcessorEditor(MyAudioProcessor& p)
-    : AudioProcessorEditor(p)
+    : AudioProcessorEditor(p), audioProcessor(p),
+    genericParamEditor(audioProcessor.getParameterManager())
     
 {
 

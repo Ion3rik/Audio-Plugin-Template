@@ -1,7 +1,6 @@
-
-# Modified by Jon Fagerström, 2025
 # Original code copyright © Joao Rossi
 # Original source: https://github.com/joaorossi/modern-real-time-audio-2025
+# Modified by Jon Fagerström, 2025
 
 cmake_minimum_required(VERSION 3.25)
 
@@ -20,7 +19,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0")
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # Define project
-project(mrta
+project(MyAwesomePlugins
     VERSION 0.0.1
     LANGUAGES C CXX)
 
@@ -48,12 +47,11 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/JUCE)
 # Add MRTA module
 juce_add_module(${CMAKE_CURRENT_SOURCE_DIR}/modules/mrta_utils)
 
-# General variables
-# You should change this to something more interesting
-set(company_name "Ion3rik OY")
-set(company_copyright "Ion3rik OY © 2025")
-set(company_code "ION3")
-set(company_bundle_id "com.Ion3rik")
+# Variables for vendor information
+set(company_name "My Awesome Plugins OY")
+set(company_copyright "My Awesome Plugins OY © 2025")
+set(company_code "MYAP")
+set(company_bundle_id "com.MyAwesomePlugins")
 
 # This function adds a JUCE plugin target to this project
 # Arguments:
@@ -135,13 +133,12 @@ endfunction(add_plugin)
 
 
 
-## My Project
+## My Awesome Project
 
+# Source Folders
+set(root_source ${CMAKE_CURRENT_SOURCE_DIR}/source)
 set(dsp_source ${CMAKE_CURRENT_SOURCE_DIR}/source/DSP)
 set(utils_source ${CMAKE_CURRENT_SOURCE_DIR}/source/Utils)
-set(gui_source ${CMAKE_CURRENT_SOURCE_DIR}/source/GUI)
-
-set(root_source ${CMAKE_CURRENT_SOURCE_DIR}/source)
 
 add_plugin(root_source
     VERSION 0.1.0
@@ -152,22 +149,12 @@ add_plugin(root_source
     SOURCES
         ${root_source}/PluginEditor.cpp
         ${root_source}/PluginProcessor.cpp
-        ${utils_source}/ParameterInfo.cpp
 
     INCLUDE_DIRS
-        ${stn_one2many_source}
         ${dsp_source}
-        ${utils_source}
-        ${sampler_source}
-        ${gui_source})
+        ${utility_source}
+
     
-# Copy resources directory to output directory
-add_custom_command(
-    TARGET root_source POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_SOURCE_DIR}/resources"
-        "$<TARGET_FILE_DIR:root_source>/resources"
-    COMMENT "Copying resources directory..."
 )
 
         

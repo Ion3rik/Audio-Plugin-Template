@@ -1,6 +1,6 @@
 #pragma once
-
 #include <JuceHeader.h>
+#include "Utils/SmoothedGain.h"
 
 
 class MyAudioProcessor : public juce::AudioProcessor
@@ -16,7 +16,7 @@ public:
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
-
+    mrta::ParameterManager& getParameterManager() { return paramManager; }
 
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;
@@ -35,7 +35,9 @@ public:
     
 
 private:
-    
+
+    Utils::SmoothedGain smoothedGain;
+    mrta::ParameterManager paramManager;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MyAudioProcessor)
 };

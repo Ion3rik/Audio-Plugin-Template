@@ -1,15 +1,19 @@
 #include "PluginProcessor.h"
-#include "JuceHeader.h"
+#include <JuceHeader.h>
 #include "PluginEditor.h"
-#include "ParameterInfo.h"
+#include "Parameters.h"
 
 
 MyAudioProcessor::MyAudioProcessor() :
-    AudioProcessor (BusesProperties()
-        .withOutput("Output", juce::AudioChannelSet::stereo(), true)) // force stereo output
-    
+    paramManager(*this, ProjectInfo::projectName, Param::getParameterVector()) // Construct the parameter manager
     
 {
+    // Register parameter callbacks here
+    paramManager.registerParameterCallback(Param::ID::Gain,
+    [this](float newValue, bool force)
+    {
+        smoothedGain.setTargetGain(newValue);
+    });
 
 }
 
@@ -19,7 +23,7 @@ MyAudioProcessor::~MyAudioProcessor()
 
 void MyAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-
+    smoothedGain.prepare(sampleRate, Param::Value::RampTimeS, Param::Range::GainDef);
 }
 
 void MyAudioProcessor::releaseResources()
@@ -30,22 +34,24 @@ void MyAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Midi
 {
 
     juce::ScopedNoDenormals noDenormals;
+    paramManager.updateParameters();
 
     const unsigned int numChannels{ static_cast<unsigned int>(buffer.getNumChannels()) };
     const unsigned int numSamples{ static_cast<unsigned int>(buffer.getNumSamples()) };
 
-    buffer.clear(); 
+    smoothedGain.applyGain(buffer, numSamples);
 
 }
 
 void MyAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
+    paramManager.getStateInformation(destData);
 
 }
 
 void MyAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
-
+    paramManager.setStateInformation(data, sizeInBytes);
 }
 
 bool MyAudioProcessor::acceptsMidi() const
